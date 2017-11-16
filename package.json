@@ -4,7 +4,9 @@
   "description": "Chrome extension to run custom js/css on any webpage",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cross-env NODE_ENV=production node build.js",
+    "build:dev": "cross-env NODE_ENV=dev node build.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,19 @@
   "bugs": {
     "url": "https://github.com/n1kk/chrome-extra-js/issues"
   },
-  "homepage": "https://github.com/n1kk/chrome-extra-js#readme"
+  "homepage": "https://github.com/n1kk/chrome-extra-js#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.54",
+    "cross-env": "^5.1.1",
+    "del": "^3.0.0",
+    "filesize": "^3.5.11",
+    "fs-extra": "latest",
+    "mkdirp": "^0.5.1",
+    "rollup": "^0.51.6",
+    "rollup-plugin-minify": "^1.0.3",
+    "rollup-plugin-typescript2": "^0.8.0",
+    "text-table": "^0.2.0",
+    "typescript": "^2.6.1"
+  }
 }

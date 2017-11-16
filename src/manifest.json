@@ -6,9 +6,21 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "assets/icon_128.png",
-    "default_popup": "src/popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Extra JS"
   },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
 
   "permissions": [
     "activeTab",
