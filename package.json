@@ -1,0 +1,19 @@
+{
+  "name": "chrome-extra-js",
+  "version": "1.0.0",
+  "description": "Chrome extension to run custom js/css on any webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n1kk/chrome-extra-js.git"
+  },
+  "author": "n1kk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n1kk/chrome-extra-js/issues"
+  },
+  "homepage": "https://github.com/n1kk/chrome-extra-js#readme"
+}
