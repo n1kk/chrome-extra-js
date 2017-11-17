@@ -5,30 +5,24 @@ const path = require('path');
 const del = require('del');
 const rollup = require('rollup');
 const rollup_ts2 = require('rollup-plugin-typescript2');
-const rollup_minify = require('rollup-plugin-minify');
 const pkg = require('./package.json');
 const filesize = require('filesize');
 const text_table = require('text-table');
-
-const { production, dev, test } = ["production", "dev", "test"].reduce((acc, env) => {
-  acc[env] = process.env.NODE_ENV === env;
-  return acc;
-}, {});
+const rollup_noderesolve = require('rollup-plugin-node-resolve');
 
 const baseConf = {
   format: 'es',
   ts_config: {
     tsconfigOverride: {
-      compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: !production }
+      compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
     }
   },
-  minify: production,
 }
 
 const targets = [
   { parent: baseConf, input: 'background.ts' },
   { parent: baseConf, input: 'content.ts' },
-  { parent: baseConf, input: 'popup.ts' },
+  { parent: baseConf, input: 'popup.tsx' },
 ];
 
 let promise = Promise.resolve();
@@ -52,14 +46,14 @@ function runBuild(conf) {
   const input = `src/${conf.input||(pkg.name+'.js')}`
   const dest = conf.dest || `${conf.destDir||'dist'}/${conf.filename||name||pkg.name}${conf.sfx||''}${conf.ext||'.js'}`
   const plugins = [
-    rollup_ts2(conf.ts_config || {}),
-    //rollup_filesize()
+  	rollup_ts2(conf.ts_config || {}),
+    rollup_noderesolve({
+      jsnext: true,
+      main: true,
+      browser: true
+	  })
   ]
     .concat(conf.plugins || [])
-    .concat(conf.minify ? [rollup_minify({
-      [conf.format]: dest.replace(conf.ext||'.js', '.min' + (conf.ext||'.js'))
-    })] : [])
-    .concat(conf.gzip ? [rollup_gzip({options: {level: 9}})] : [])
     
   task(() =>
     rollup.rollup({
