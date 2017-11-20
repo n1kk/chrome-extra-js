@@ -5,7 +5,7 @@ const pkg = require(resolve('package.json'))
 
 const gulp = require('gulp');
 const gulp_babel = require('gulp-babel');
-const gulp_babili = require("gulp-babili");
+const gulp_babel_minify = require("gulp-babel-minify");
 const gulpif = require('gulp-if');
 const gulp_rename = require("gulp-rename");
 const gulp_sizereport = require('gulp-sizereport');
@@ -18,6 +18,7 @@ const gulp_print = require('gulp-print');
 const rollup = require('rollup').rollup;
 const rollup_babel = require('rollup-plugin-babel');
 const rollup_nodeResolve = require('rollup-plugin-node-resolve');
+const rollup_ts2 = require('rollup-plugin-typescript2');
 
 const del = require('del');
 const argv = require('yargs').argv;
@@ -47,19 +48,26 @@ gulp.task('clean', function () {
 //----------------------------------------
 
 // gulp-rollup
-gulp.task('compile:jsx:gulp-rollup', () => {
+gulp.task('compile:tsx:rollup', () => {
     return gulp.src('./src/!**!/!*.jsx')
       //.pipe(gulp_print())
       .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
       .pipe(gulp_rollup({
         input: 'src/codeEdit.jsx',
         format: 'iife',
-        plugins: [rollup_babel(babelConfig)],
+        plugins: [
+          //rollup_babel(babelConfig)
+          rollup_ts2({
+            tsconfigOverride: {
+              compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
+            }
+          })
+        ],
         globals: {preact: 'preact'},
         external: ['preact'],
         impliedExtensions: ['.jsx']
       }))
-      .pipe(gulpif(argv.prod, gulp_babili({mangle: {keepClassName: true}})))
+      .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
       .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
       .pipe(gulp.dest(outputDir))
   }
@@ -82,7 +90,7 @@ gulp.task('compile:jsx:gulp--better-rollup', () => {
       //globals: {preact: 'preact'},
     }))
     
-    .pipe(gulpif(argv.prod, gulp_babili({mangle: {keepClassName: true}})))
+    .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
     .pipe(gulp_rename({extname: ".js"}))
     .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
     .pipe(gulp.dest(outputDir))
@@ -111,7 +119,7 @@ gulp.task('compile:jsx:vanilla-rollup', function () {
 
 gulp.task('copy:preact', () => {
     return gulp.src('./node_modules/preact/dist/preact.js')
-      .pipe(gulp_babili({mangle: {keepClassName: true}}))
+      .pipe(gulp_babel_minify({mangle: {keepClassName: true}}))
       .pipe(gulp.dest(outputDir))
   }
 );
@@ -128,7 +136,7 @@ gulp.task('copy:rest', () => {
     return gulp.src(['./src/*.{js,html,json}'])
       .pipe(filteredJS)
       .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
-      .pipe(gulpif(argv.prod, gulp_babili({mangle: {keepClassName: true}})))
+      .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
       .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
       .pipe(filteredJS.restore)
       .pipe(gulp.dest(outputDir))
