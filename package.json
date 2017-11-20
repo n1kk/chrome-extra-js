@@ -21,11 +21,13 @@
   "dependencies": {},
   "devDependencies": {
     "@types/chrome": "0.0.54",
+    "ace-code-editor": "^1.2.3",
     "cross-env": "^5.1.1",
     "del": "^3.0.0",
     "filesize": "^3.5.11",
     "fs-extra": "latest",
     "mkdirp": "^0.5.1",
+    "monaco-editor": "^0.10.1",
     "preact": "^8.2.6",
     "rollup": "^0.50.1",
     "rollup-plugin-commonjs": "^8.2.6",
