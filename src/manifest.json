@@ -6,24 +6,25 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "codeEdit.html",
     "default_title": "Extra JS"
   },
 
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["codeManager.js"],
     "persistent": true
   },
 
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
+      "js": ["codeClient.js"]
     }
   ],
 
   "permissions": [
     "activeTab",
+    "bookmarks",
     "storage"
   ],
 

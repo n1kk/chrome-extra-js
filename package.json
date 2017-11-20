@@ -4,9 +4,10 @@
   "description": "Chrome extension to run custom js/css on any webpage",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env NODE_ENV=production node build.js",
-    "build:dev": "cross-env NODE_ENV=dev node build.js"
+    "build": "gulp",
+    "build:prod": "gulp --prod",
+    "build:watch": "gulp --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,18 +19,31 @@
     "url": "https://github.com/n1kk/chrome-extra-js/issues"
   },
   "homepage": "https://github.com/n1kk/chrome-extra-js#readme",
-  "dependencies": {},
   "devDependencies": {
-    "@types/chrome": "0.0.54",
+    "ace-builds": "^1.2.9",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-preact": "^1.1.0",
     "cross-env": "^5.1.1",
     "del": "^3.0.0",
-    "filesize": "^3.5.11",
-    "fs-extra": "latest",
-    "mkdirp": "^0.5.1",
-    "rollup": "^0.51.6",
-    "rollup-plugin-minify": "^1.0.3",
-    "rollup-plugin-typescript2": "^0.8.0",
-    "text-table": "^0.2.0",
-    "typescript": "^2.6.1"
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^7.0.0",
+    "gulp-babili": "^0.1.4",
+    "gulp-better-rollup": "^2.0.0",
+    "gulp-cli": "^1.4.0",
+    "gulp-filter": "^5.0.1",
+    "gulp-if": "^2.0.2",
+    "gulp-print": "^2.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-rollup": "^2.15.0",
+    "gulp-sizereport": "^1.2.0",
+    "gulp-sourcemaps": "latest",
+    "preact": "^8.2.6",
+    "rollup": "^0.51.8",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "yargs": "^10.0.3"
   }
 }
