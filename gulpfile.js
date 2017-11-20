@@ -47,69 +47,74 @@ gulp.task('clean', function () {
 
 //----------------------------------------
 
-// gulp-rollup
-gulp.task('compile:tsx:rollup', () => {
-    return gulp.src('./src/!**!/!*.jsx')
-      //.pipe(gulp_print())
-      .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
-      .pipe(gulp_rollup({
-        input: 'src/codeEdit.jsx',
-        format: 'iife',
-        plugins: [
-          //rollup_babel(babelConfig)
-          rollup_ts2({
-            tsconfigOverride: {
-              compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
-            }
-          })
-        ],
-        globals: {preact: 'preact'},
-        external: ['preact'],
-        impliedExtensions: ['.jsx']
-      }))
-      .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
-      .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
-      .pipe(gulp.dest(outputDir))
-  }
-);
-
-// gulp--better-rollup
-gulp.task('compile:jsx:gulp--better-rollup', () => {
-  return gulp.src('./src/codeEdit.jsx')
+// editor ui
+/*gulp.task('editor:tsx:rollup', () => {
+  return gulp.src('./src/!**!/!*.tsx')
     //.pipe(gulp_print())
+    .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
+    .pipe(gulp_rollup({
+      input: 'src/codeEdit.tsx',
+      format: 'iife',
+      plugins: [
+        //rollup_babel(babelConfig)
+        rollup_ts2({tsconfigOverride: {
+          compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
+        }})
+      ],
+      globals: {preact: 'preact'},
+      external: ['preact'],
+      impliedExtensions: ['.tsx']
+    }))
+    .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
+    .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
+    .pipe(gulp.dest(outputDir))
+});*/
+
+// editor ui
+const editorTask = 'editor'
+gulp.task(editorTask+1, () => {
+  return gulp.src(resolve('./src/codeEdit.tsx'))
+    .pipe(gulp_print())
     .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
     //.pipe(babel(babelConfig))
     .pipe(gulp_better_rollup({
       //external: ['preact'],
       plugins: [
-        rollup_nodeResolve({ extensions: [ '.jsx'] }),
-        rollup_babel(babelConfig),
+        rollup_nodeResolve({ extensions: ['.tsx', '.ts'] }),
+        //rollup_babel(babelConfig),
+        rollup_ts2({tsconfigOverride: {
+          compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
+        }}),
       ]
     }, {
       format: 'iife',
       //globals: {preact: 'preact'},
     }))
-    
-    .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
-    .pipe(gulp_rename({extname: ".js"}))
-    .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
-    .pipe(gulp.dest(outputDir))
-  }
-);
+  
+  .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
+  .pipe(gulp_rename({extname: ".js"}))
+  .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
+  .pipe(gulp.dest(outputDir))
+});
 
 // vanilla-rollup
-gulp.task('compile:jsx:vanilla-rollup', function () {
+gulp.task(editorTask, function () {
   return rollup({
-    input: './src/codeEdit.jsx',
-    external: ['preact'],
+    input: './src/codeEdit.tsx',
+    //external: ['preact'],
     plugins: [
-      rollup_babel(babelConfig),
-      rollup_nodeResolve({ extensions: [ '.jsx'] }),
+      //rollup_babel(babelConfig),
+      rollup_nodeResolve({
+        jsnext: true,
+        main: true,
+        browser: true
+      }),
+      rollup_ts2(),
     ]
   }).then(function (bundle) {
     return bundle.write({
       format: 'iife',
-      globals: {preact: 'preact'},
+      //globals: {preact: 'preact'},
       file: './dist/codeEdit.js'
     });
   });
@@ -154,7 +159,7 @@ gulp.task('sizereport', function () {
     .pipe(gulp_sizereport());
 });
 
-gulp.task('default', gulp.series('clean', 'compile:jsx:gulp--better-rollup', 'copy:rest', 'copy:ace', 'copy:assets'));
+gulp.task('default', gulp.series('clean', editorTask, 'copy:rest', 'copy:ace', 'copy:assets'));
 
 if (argv.watch)
   gulp.watch('src/**/*', gulp.series('default'));

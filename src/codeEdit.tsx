@@ -3,6 +3,7 @@ import HelloWorld from "./components/Hello";
 console.log("popup runs")
 
 import { h, render } from 'preact';
+
 import Editor from "./components/Editor";
 
 render((

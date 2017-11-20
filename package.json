@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/n1kk/chrome-extra-js#readme",
   "devDependencies": {
+    "@types/ace": "0.0.35",
+    "@types/chrome": "0.0.54",
     "ace-builds": "^1.2.9",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -40,7 +42,7 @@
     "gulp-sizereport": "^1.2.0",
     "gulp-sourcemaps": "latest",
     "preact": "^8.2.6",
-    "rollup": "^0.51.8",
+    "rollup": "^0.50.1",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-typescript2": "^0.8.1",
