@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",                       /* Specify ECMAScript target version: 'ES3' (isDefault), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-    "module": "commonjs",                       /* Specify module code generation: 'none', commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+    "target": "es2015",                       /* Specify ECMAScript target version: 'ES3' (isDefault), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+    "module": "none",                         /* Specify module code generation: 'none', commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "jsxFactory": "h",
     "declaration": false,                     /* Generates corresponding '.d.ts' file. */
     "sourceMap": true,                        /* Generates corresponding '.map' file. */
-    "outDir": "dist",                         /* Redirect output structure to the directory. */
+    "outDir": "./dist/",                         /* Redirect output structure to the directory. */
 
     "strict": true,                           /* Enable all strict type-checking options. */
     "noImplicitAny": false,                   /* Raise error on expressions and declarations with an implied 'any' type. */
@@ -16,10 +16,11 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "node_modules/preact/"
+    "./src/**/*.tsx"
   ],
   "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
   ],
   "files": [
     "node_modules/preact/dist/preact.d.ts"

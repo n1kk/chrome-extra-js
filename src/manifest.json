@@ -6,19 +6,19 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_popup": "codeEdit.html",
+    "default_popup": "ExtraJS.Editor.html",
     "default_title": "Extra JS"
   },
 
   "background": {
-    "scripts": ["codeManager.js"],
+    "scripts": ["ExtraJS.Manager.js"],
     "persistent": true
   },
 
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["codeClient.js"]
+      "js": ["ExtraJS.Client.js"]
     }
   ],
 

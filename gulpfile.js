@@ -53,7 +53,7 @@ gulp.task('clean', function () {
     //.pipe(gulp_print())
     .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
     .pipe(gulp_rollup({
-      input: 'src/codeEdit.tsx',
+      input: 'src/ExtraJS.Editor.tsx',
       format: 'iife',
       plugins: [
         //rollup_babel(babelConfig)
@@ -72,35 +72,32 @@ gulp.task('clean', function () {
 
 // editor ui
 const editorTask = 'editor'
-gulp.task(editorTask+1, () => {
-  return gulp.src(resolve('./src/codeEdit.tsx'))
+gulp.task(editorTask, () => {
+  return gulp.src(resolve('./src/ExtraJS.Editor.tsx'))
     .pipe(gulp_print())
-    .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
+    .pipe(gulp_sourcemaps.init())
     //.pipe(babel(babelConfig))
     .pipe(gulp_better_rollup({
       //external: ['preact'],
       plugins: [
         rollup_nodeResolve({ extensions: ['.tsx', '.ts'] }),
         //rollup_babel(babelConfig),
-        rollup_ts2({tsconfigOverride: {
-          compilerOptions: { target: 'ES2015' , module: "es2015", declaration: false, sourcemap: true }
-        }}),
+        rollup_ts2(),
       ]
     }, {
       format: 'iife',
       //globals: {preact: 'preact'},
     }))
-  
   .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
   .pipe(gulp_rename({extname: ".js"}))
-  .pipe(gulpif(!argv.prod, gulp_sourcemaps.write('.')))
+  .pipe(gulp_sourcemaps.write('.'))
   .pipe(gulp.dest(outputDir))
 });
 
 // vanilla-rollup
-gulp.task(editorTask, function () {
+/*gulp.task(editorTask+1, function () {
   return rollup({
-    input: './src/codeEdit.tsx',
+    input: './src/ExtraJS.Editor.tsx',
     //external: ['preact'],
     plugins: [
       //rollup_babel(babelConfig),
@@ -118,7 +115,49 @@ gulp.task(editorTask, function () {
       file: './dist/codeEdit.js'
     });
   });
+});*/
+
+// namager
+const managerTask = 'manager'
+gulp.task(managerTask, () => {
+  return gulp.src(resolve('./src/ExtraJS.Manager.ts'))
+    .pipe(gulp_print())
+    .pipe(gulp_sourcemaps.init())
+    .pipe(gulp_better_rollup({
+      plugins: [
+        rollup_nodeResolve({ extensions: ['.tsx', '.ts'] }),
+        rollup_ts2(),
+      ]
+    }, {
+      format: 'iife',
+    }))
+    .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
+    .pipe(gulp_rename({extname: ".js"}))
+    .pipe(gulp_sourcemaps.write('.'))
+    .pipe(gulp.dest(outputDir))
 });
+
+// client
+const clientTask = 'client'
+gulp.task(clientTask, () => {
+  return gulp.src(resolve('./src/ExtraJS.Client.ts'))
+    .pipe(gulp_print())
+    .pipe(gulp_sourcemaps.init())
+    .pipe(gulp_better_rollup({
+      plugins: [
+        rollup_nodeResolve({ extensions: ['.tsx', '.ts'] }),
+        rollup_ts2(),
+      ]
+    }, {
+      format: 'iife',
+    }))
+    .pipe(gulpif(argv.prod, gulp_babel_minify({mangle: {keepClassName: true}})))
+    .pipe(gulp_rename({extname: ".js"}))
+    .pipe(gulp_sourcemaps.write('.'))
+    .pipe(gulp.dest(outputDir))
+});
+
+gulp.task('compile:ts', gulp.series(editorTask, managerTask, clientTask));
 
 // -----------------------------------------------------------
 
@@ -159,9 +198,9 @@ gulp.task('sizereport', function () {
     .pipe(gulp_sizereport());
 });
 
-gulp.task('default', gulp.series('clean', editorTask, 'copy:rest', 'copy:ace', 'copy:assets'));
+gulp.task('default', gulp.series('clean', 'compile:ts', 'copy:rest', 'copy:ace', 'copy:assets'));
 
 if (argv.watch)
-  gulp.watch('src/**/*', gulp.series('default'));
+  gulp.watch('src/**/*', gulp.series('compile:ts'));
 
 
