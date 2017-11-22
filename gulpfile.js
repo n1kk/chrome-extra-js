@@ -137,8 +137,8 @@ gulp.task(managerTask, () => {
     .pipe(gulp.dest(outputDir))
 });
 
-// client
-const clientTask = 'client'
+// role
+const clientTask = 'role'
 gulp.task(clientTask, () => {
   return gulp.src(resolve('./src/ExtraJS.Client.ts'))
     .pipe(gulp_print())

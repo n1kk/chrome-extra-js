@@ -15,14 +15,16 @@
     "persistent": true
   },
 
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["ExtraJS.Client.js"]
-    }
-  ],
+//  "content_scripts": [
+//    {
+//      "matches": ["http://*/*", "https://*/*"],
+//      "js": ["ExtraJS.Client.js"]
+//    }
+//  ],
 
   "permissions": [
+    "http://*/", "https://*/",
+    "tabs",
     "activeTab",
     "bookmarks",
     "storage"
