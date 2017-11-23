@@ -51,7 +51,7 @@ gulp.task('clean', function () {
 /*gulp.task('editor:tsx:rollup', () => {
   return gulp.src('./src/!**!/!*.tsx')
     //.pipe(gulp_print())
-    .pipe(gulpif(!argv.prod, gulp_sourcemaps.init()))
+    .pipe(gulpif(!argv.prod, gulp_sourcemaps.getRoot()))
     .pipe(gulp_rollup({
       input: 'src/ExtraJS.Editor.tsx',
       format: 'iife',

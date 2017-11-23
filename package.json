@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/ace": "0.0.35",
     "@types/chrome": "0.0.54",
+    "@types/lodash": "^4.14.85",
     "ace-builds": "^1.2.9",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -41,6 +42,7 @@
     "gulp-rollup": "^2.15.0",
     "gulp-sizereport": "^1.2.0",
     "gulp-sourcemaps": "latest",
+    "lodash": "^4.17.4",
     "preact": "^8.2.6",
     "rollup": "^0.50.1",
     "rollup-plugin-babel": "^3.0.2",
@@ -48,5 +50,6 @@
     "rollup-plugin-typescript2": "^0.8.1",
     "typescript": "^2.6.1",
     "yargs": "^10.0.3"
-  }
+  },
+  "dependencies": {}
 }

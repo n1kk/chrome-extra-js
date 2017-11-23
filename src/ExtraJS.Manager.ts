@@ -2,6 +2,7 @@ import Communicator, {CommEvent, CommRole} from "./Communicator";
 import Tab = chrome.tabs.Tab;
 import TabChangeInfo = chrome.tabs.TabChangeInfo;
 import {log} from "./Logger";
+import Data from "./Data";
 
 let comm = new Communicator(CommRole.Manager)
 
@@ -29,5 +30,6 @@ chrome.tabs.onUpdated.addListener(function (tabId:number, changeInfo:TabChangeIn
 
 comm.on(CommEvent.REQUEST_CODE_TO_INJECT, (event, data, sender, respond) => {
   log('code request from', sender)
-
 })
+
+let data = new Data()
